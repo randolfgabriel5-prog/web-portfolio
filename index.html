@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randolf Gabriel | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ─────────────────────────────────────────
+   VARIABLES & RESET
+───────────────────────────────────────── */
+:root {
+  --bg:        #080c14;
+  --bg2:       #0d1220;
+  --accent:    #ff6b3d;
+  --accent2:   #ff9a6c;
+  --glow:      rgba(255,107,61,.35);
+  --white:     #f0f2f7;
+  --muted:     #8892a4;
+  --border:    rgba(255,255,255,.07);
+  --glass:     rgba(255,255,255,.03);
+  --radius:    14px;
+  --ff-head:   'Syne', sans-serif;
+  --ff-body:   'DM Sans', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--ff-body);line-height:1.65;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+
+/* ─────────────────────────────────────────
+   NOISE TEXTURE OVERLAY
+───────────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* ─────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────── */
+#navbar{
+  position:fixed;top:0;width:100%;z-index:999;
+  padding:1.3rem 6%;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .35s ease;
+}
+#navbar.scrolled{
+  background:rgba(8,12,20,.85);
+  backdrop-filter:blur(18px);
+  padding:0.9rem 6%;
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:var(--ff-head);font-weight:800;font-size:1.4rem;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.nav-links{list-style:none;display:flex;gap:2.2rem}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);letter-spacing:.5px;transition:.25s}
+.nav-links a:hover{color:var(--accent)}
+.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white)}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:4rem;
+  padding:120px 6% 80px;
+  position:relative;z-index:1;
+}
+/* Gradient blob */
+#hero::after{
+  content:'';position:absolute;right:0;top:10%;
+  width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,107,61,.12) 0%, transparent 70%);
+  pointer-events:none;z-index:-1;
+}
+.hero-label{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.78rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.2rem;
+  background:rgba(255,107,61,.08);border:1px solid rgba(255,107,61,.2);
+  padding:.35rem .9rem;border-radius:50px;
+}
+.hero-label span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.hero-title{font-family:var(--ff-head);font-size:clamp(2.8rem,5.5vw,5.2rem);line-height:1.05;font-weight:800;letter-spacing:-2px;margin-bottom:1rem}
+.hero-title .accent{color:var(--accent);text-shadow:0 0 30px var(--glow)}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:480px;margin-bottom:2rem}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* Pill info row */
+.hero-pills{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2.5rem}
+.pill{
+  background:var(--glass);border:1px solid var(--border);
+  padding:.45rem 1rem;border-radius:50px;font-size:.8rem;color:var(--muted);
+  display:flex;align-items:center;gap:.5rem;
+}
+.pill i{color:var(--accent);font-size:.75rem}
+
+/* ──────────────────────────
+   PROFILE IMAGE CONTAINER
+   ★ REPLACE src="images/profile.jpg" with your actual photo path
+   ★ Or use an online URL: src="https://..."
+────────────────────────── */
+.hero-img-wrap{
+  position:relative;width:320px;height:320px;flex-shrink:0;
+  cursor:pointer; /* clickable to view fullscreen */
+}
+.hero-img-wrap::before{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  background:conic-gradient(from 0deg, transparent 0%, var(--accent) 35%, transparent 70%);
+  animation:spin 8s linear infinite;filter:blur(18px);opacity:.6;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-img-wrap::after{
+  content:'Click to view \1F464';
+  position:absolute;inset:0;border-radius:50%;
+  background:rgba(255,107,61,.55);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:600;letter-spacing:.5px;
+  opacity:0;transition:.3s;z-index:3;
+}
+.hero-img-wrap:hover::after{opacity:1}
+.hero-img-wrap img{
+  position:relative;z-index:2;
+  width:100%;height:100%;object-fit:cover;border-radius:50%;
+  border:2px solid var(--border);
+}
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.8rem 1.7rem;border-radius:8px;font-size:.9rem;
+  font-weight:600;font-family:var(--ff-body);cursor:pointer;
+  border:none;transition:all .3s ease;
+}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px var(--glow)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(255,107,61,.55)}
+.btn-outline{background:transparent;color:var(--white);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);background:rgba(255,107,61,.06)}
+
+/* ─────────────────────────────────────────
+   SECTION SHARED
+───────────────────────────────────────── */
+.section{padding:7rem 6%;position:relative;z-index:1}
+.section-tag{
+  font-size:.75rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.6rem;font-weight:600;
+}
+.section-title{font-family:var(--ff-head);font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1.5px;margin-bottom:.5rem}
+.section-sub{color:var(--muted);max-width:500px;margin-bottom:3.5rem}
+.divider{width:50px;height:3px;background:var(--accent);border-radius:4px;margin:1rem 0 2.5rem}
+
+/* ─────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-cards{display:flex;flex-direction:column;gap:1rem}
+.about-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.5rem;display:flex;align-items:flex-start;gap:1.2rem;
+  transition:.3s;
+}
+.about-card:hover{transform:translateX(6px);border-color:rgba(255,107,61,.3)}
+.about-card .icon{
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(255,107,61,.12);border:1px solid rgba(255,107,61,.2);
+  display:grid;place-items:center;flex-shrink:0;
+  color:var(--accent);font-size:1.1rem;
+}
+.about-card h4{font-family:var(--ff-head);font-weight:700;margin-bottom:.3rem}
+.about-card p{color:var(--muted);font-size:.88rem}
+.stat-row{display:flex;gap:2rem;margin-top:1.5rem}
+.stat h3{font-family:var(--ff-head);font-size:2.2rem;font-weight:800;color:var(--accent)}
+.stat p{font-size:.8rem;color:var(--muted)}
+
+/* ─────────────────────────────────────────
+   SKILLS
+───────────────────────────────────────── */
+#skills{background:var(--bg2)}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 4rem}
+.skill-row{margin-bottom:.5rem}
+.skill-head{display:flex;justify-content:space-between;margin-bottom:.6rem;font-size:.88rem;font-weight:600}
+.skill-pct{color:var(--accent);font-family:var(--ff-head)}
+.progress-bg{height:6px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:6px;transition:width 1.4s cubic-bezier(.22,1,.36,1);box-shadow:0 0 10px var(--glow)}
+.tools-row{margin-top:3rem;display:flex;flex-wrap:wrap;gap:.8rem}
+.tool-tag{
+  background:var(--glass);border:1px solid var(--border);
+  padding:.45rem 1rem;border-radius:50px;font-size:.8rem;color:var(--muted);
+  transition:.25s;
+}
+.tool-tag:hover{border-color:var(--accent);color:var(--white)}
+
+/* ─────────────────────────────────────────
+   PROJECTS
+───────────────────────────────────────── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.proj-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;transition:.35s;
+}
+.proj-card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.6);border-color:rgba(255,255,255,.14)}
+
+/* ──────────────────────────────────────────
+   PROJECT IMAGE PLACEHOLDERS
+   ★ Replace src="images/project1.jpg" etc. with your actual image paths
+   ★ The image is CLICKABLE — it opens in a lightbox
+   ★ Format: src="YOUR_IMAGE_PATH_HERE"
+──────────────────────────────────────────── */
+.proj-thumb{
+  position:relative;height:195px;overflow:hidden;
+  background:linear-gradient(135deg,#111825,#1a2235);
+}
+.proj-thumb img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease;
+}
+.proj-card:hover .proj-thumb img{transform:scale(1.07)}
+.proj-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,12,20,.9) 0%,transparent 60%);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:.3s;
+}
+.proj-card:hover .proj-overlay{opacity:1}
+.view-btn{
+  background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:.6rem 1.2rem;font-size:.8rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:.5rem;transform:translateY(10px);
+  transition:transform .3s ease .05s;
+}
+.proj-card:hover .view-btn{transform:translateY(0)}
+/* Placeholder icon when no image */
+.proj-placeholder{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:3rem;color:rgba(255,107,61,.25);
+  /* Subtle pattern */
+  background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,107,61,.02) 10px,rgba(255,107,61,.02) 20px);
+}
+.proj-info{padding:1.4rem}
+.proj-info h3{font-family:var(--ff-head);font-weight:700;margin-bottom:.4rem;font-size:1.05rem}
+.proj-info p{color:var(--muted);font-size:.85rem;margin-bottom:1rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap}
+.tags span{font-size:.72rem;background:rgba(255,107,61,.1);color:var(--accent);padding:.25rem .7rem;border-radius:50px}
+
+/* ─────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────── */
+#contact{background:var(--bg2)}
+.contact-grid{display:grid;grid-template-columns:3fr 2fr;gap:4rem;align-items:start}
+.glass-form{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.input-wrap{margin-bottom:1.2rem}
+.input-wrap label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.5rem;color:var(--muted);letter-spacing:.5px}
+.glass-form input,.glass-form textarea{
+  width:100%;padding:.9rem 1rem;
+  background:rgba(0,0,0,.3);border:1px solid var(--border);
+  border-radius:8px;color:var(--white);font-family:var(--ff-body);font-size:.9rem;transition:.3s;
+}
+.glass-form input:focus,.glass-form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,107,61,.1)}
+.glass-form textarea{min-height:130px;resize:vertical}
+.contact-info h3{font-family:var(--ff-head);font-size:1.3rem;margin-bottom:1.5rem}
+.contact-item{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding:1rem;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius)}
+.contact-item .icon{width:40px;height:40px;border-radius:10px;background:rgba(255,107,61,.12);display:grid;place-items:center;color:var(--accent)}
+.contact-item small{display:block;color:var(--muted);font-size:.75rem}
+.contact-item span{font-size:.9rem;font-weight:500}
+.socials{margin-top:2rem;display:flex;gap:.8rem}
+.social-btn{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--glass);border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--muted);transition:.3s;
+}
+.social-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-3px)}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer{
+  text-align:center;padding:2rem;
+  border-top:1px solid var(--border);
+  font-size:.85rem;color:var(--muted);z-index:1;position:relative;
+}
+footer span{color:var(--accent)}
+
+/* ─────────────────────────────────────────
+   LIGHTBOX (for clickable images)
+───────────────────────────────────────── */
+.lightbox{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;
+  padding:2rem;
+}
+.lightbox.open{display:flex}
+.lightbox img{
+  max-width:90vw;max-height:85vh;
+  border-radius:var(--radius);border:1px solid var(--border);
+  box-shadow:0 30px 80px rgba(0,0,0,.8);
+  object-fit:contain;
+}
+.lightbox-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);
+  border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:grid;place-items:center;transition:.2s;
+}
+.lightbox-close:hover{background:var(--accent)}
+.lightbox-caption{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  color:var(--muted);font-size:.85rem;text-align:center;
+}
+
+/* ─────────────────────────────────────────
+   SCROLL ANIMATIONS
+───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .8s ease,transform .8s ease}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(36px);transition:opacity .8s ease,transform .8s ease}
+.reveal-right.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ─────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────── */
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;text-align:center;padding-top:110px;gap:2rem}
+  #hero::after{display:none}
+  .hero-img-wrap{width:220px;height:220px;margin:0 auto}
+  .hero-sub{margin:0 auto 2rem}
+  .hero-btns{justify-content:center}
+  .hero-pills{justify-content:center}
+  .about-grid,.skills-grid,.contact-grid,.form-row{grid-template-columns:1fr}
+  .about-grid{gap:2.5rem}
+  .nav-links{
+    position:absolute;top:100%;right:0;width:100%;
+    flex-direction:column;background:rgba(8,12,20,.97);backdrop-filter:blur(16px);
+    padding:1.5rem 0;gap:0;clip-path:circle(0% at top right);
+    transition:clip-path .5s ease-in-out;
+  }
+  .nav-links.open{clip-path:circle(150% at top right)}
+  .nav-links li a{display:block;padding:.8rem 2rem;font-size:1rem}
+  .hamburger{display:block}
+  #navbar{padding:1rem 6%}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     NAVBAR
+════════════════════════════════ -->
+<nav id="navbar">
+  <a class="logo" href="#">Randolf<span>.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Randolf<br><span class="accent">Gabriel</span></h1>
+    <p class="hero-sub">Artist · Content Creator · Future Web Developer. </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Contact Me</a>
+    </div>
+    <div class="hero-pills">
+      <div class="pill"><i class="fa-solid fa-envelope"></i> randolfgabriel5@email.com</div>
+      <div class="pill"><i class="fa-solid fa-phone"></i> 0995601045</div>
+    </div>
+  </div>
+
+  <!--
+  ╔══════════════════════════════════════════════════╗
+  ║  ★ YOUR PROFILE PHOTO GOES HERE                  ║
+  ║  Replace: src="images/profile.jpg"               ║
+  ║  With your own path, e.g.: src="images/me.jpg"   ║
+  ║  Or an online URL: src="https://..."             ║
+  ║  The photo is CLICKABLE → opens in full view      ║
+  ╚══════════════════════════════════════════════════╝
+  -->
+  <div class="hero-img-wrap" id="profileImgWrap">
+    <img
+      src="/image/IMG_20260212_152140.jpg"
+      alt="Randolf Gabriel"
+      id="profileImg"
+      onerror="this.src='https://placehold.co/320x320/111825/ff6b3d?text=Your+Photo'"
+    >
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     ABOUT
+════════════════════════════════ -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="reveal-left">
+      <div class="section-tag">Who I Am</div>
+      <h2 class="section-title">Crafting visuals<br>& clean code</h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);margin-bottom:2rem;max-width:480px">
+        I'm a creative based in the Philippines with a passion for art, digital content, and web development. Every project I take on is driven by attention to detail and a love for clean, impactful design.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><h3></h3><p></p></div>
+        <div class="stat"><h3></h3><p></p></div>
+        <div class="stat"><h3></h3><p></p></div>
+      </div>
+    </div>
+    <div class="about-cards reveal-right">
+      <div class="about-card">
+        <div class="icon"><i class="fa-solid fa-palette"></i></div>
+        <div><h4>Drafting</h4><p>Creating illustrations and visual concepts with a modern aesthetic.</p></div>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i class="fa-solid fa-video"></i></div>
+        <div><h4>Video Editing</h4><p>Producing polished, engaging content for online platforms.</p></div>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i class="fa-solid fa-code"></i></div>
+        <div><h4>Web Development</h4><p>Building responsive websites with clean HTML, CSS & JS.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SKILLS
+════════════════════════════════ -->
+<section class="section" id="skills">
+  <div class="section-tag reveal">Skills</div>
+  <h2 class="section-title reveal">My Work Skills</h2>
+  <div class="divider reveal"></div>
+
+  <div class="skills-grid" id="skillsGrid">
+    <div class="skill-row reveal d1">
+      <div class="skill-head"><span>HTML5</span><span class="skill-pct">80%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="80%"></div></div>
+    </div>
+    <div class="skill-row reveal d2">
+      <div class="skill-head"><span>CSS3</span><span class="skill-pct">75%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="75%"></div></div>
+    </div>
+    <div class="skill-row reveal d3">
+      <div class="skill-head"><span>JavaScript</span><span class="skill-pct">60%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="60%"></div></div>
+    </div>
+    <div class="skill-row reveal d4">
+      <div class="skill-head"><span>Video Editing</span><span class="skill-pct">85%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="85%"></div></div>
+    </div>
+    <div class="skill-row reveal d1">
+      <div class="skill-head"><span>Drafting</span><span class="skill-pct">90%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="90%"></div></div>
+    </div>
+    <div class="skill-row reveal d2">
+      <div class="skill-head"><span>Graphic Design</span><span class="skill-pct">70%</span></div>
+      <div class="progress-bg"><div class="progress-fill" data-width="70%"></div></div>
+    </div>
+  </div>
+
+  <div class="tools-row reveal">
+    <span class="tool-tag">Adobe Photoshop</span>
+    <span class="tool-tag">Capcut</span>
+    <span class="tool-tag">Spck Editor</span>
+    <span class="tool-tag">Canva</span>
+    <span class="tool-tag">VS Code</span>
+    <span class="tool-tag">Github</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     PROJECTS
+════════════════════════════════ -->
+<section class="section" id="projects">
+  <div class="section-tag reveal">My Work</div>
+  <h2 class="section-title reveal">Featured Projects</h2>
+  <div class="divider reveal"></div>
+
+  <div class="projects-grid">
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  ★ PROJECT 1 IMAGE                                        ║
+    ║  Replace: src="images/project1.jpg"                       ║
+    ║  The image OPENS in a lightbox when clicked               ║
+    ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="proj-card reveal d1">
+      <div class="proj-thumb">
+        <img
+          src="/image/Collage_20260410_204642_edit_6981887198898.jpg"
+          alt="Project 1"
+          class="lightbox-trigger"
+          data-caption="Project 1 — Website Design"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        >
+        <div class="proj-placeholder" style="display:none"><i class="fa-solid fa-globe"></i></div>
+        <div class="proj-overlay">
+          <button class="view-btn"><i class="fa-solid fa-expand"></i> View Image</button>
+        </div>
+      </div>
+      <div class="proj-info">
+        <h3>Photoshop Project</h3>
+        <div class="tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      </div>
+    </div>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  ★ PROJECT 2 IMAGE                                        ║
+    ║  Replace: src="images/project2.jpg"                       ║
+    ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="proj-card reveal d2">
+      <div class="proj-thumb">
+        <img
+          src="/image/Screenshot_20260410_191823_com.lemon.lvoverseas.jpg"
+          alt="Project 2"
+          class="lightbox-trigger"
+          data-caption="Project 2 — Video Editing"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        >
+        <div class="proj-placeholder" style="display:none"><i class="fa-solid fa-film"></i></div>
+        <div class="proj-overlay">
+          <button class="view-btn"><i class="fa-solid fa-expand"></i> View Image</button>
+        </div>
+      </div>
+      <div class="proj-info">
+        <h3>Video Edit Project</h3>
+        <div class="tags"><span>Capcut</span><span>After Effects</span></div>
+      </div>
+    </div>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  ★ PROJECT 3 IMAGE                                        ║
+    ║  Replace: src="images/project3.jpg"                       ║
+    ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="proj-card reveal d3">
+      <div class="proj-thumb">
+        <img
+          src="/image/IMG_20260208_153324_340.jpg"
+          alt="Project 3"
+          class="lightbox-trigger"
+          data-caption="Project 3 — Art Showcase"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        >
+        <div class="proj-placeholder" style="display:none"><i class="fa-solid fa-paintbrush"></i></div>
+        <div class="proj-overlay">
+          <button class="view-btn"><i class="fa-solid fa-expand"></i> View Image</button>
+        </div>
+      </div>
+      <div class="proj-info">
+        <h3>Art Showcase</h3>
+        <p>A collection of original digital artworks and illustrations.</p>
+        <div class="tags"><span>Photoshop</span><span>Illustration</span></div>
+      </div>
+    </div>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  ★ PROJECT 4 IMAGE                                        ║
+    ║  Replace: src="images/project4.jpg"                       ║
+    ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="proj-card reveal d4">
+      <div class="proj-thumb">
+        <img
+          src="/image/Screenshot_20260410_193804_com.canva.editor_edit_6844513416919.jpg"
+          alt="Project 4"
+          class="lightbox-trigger"
+          data-caption="Project 4 — Portfolio Design"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        >
+        <div class="proj-placeholder" style="display:none"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="proj-overlay">
+          <button class="view-btn"><i class="fa-solid fa-expand"></i> View Image</button>
+        </div>
+      </div>
+      <div class="proj-info">
+        <h3>Portfolio Design</h3>
+        <div class="tags"><span>Canva</span><span>HTML</span><span>CSS</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CONTACT
+════════════════════════════════ -->
+<section class="section" id="contact">
+  <div class="section-tag reveal">Get In Touch</div>
+  <h2 class="section-title reveal">Contact Me</h2>
+  <div class="divider reveal"></div>
+
+  <div class="contact-grid">
+    <div class="glass-form reveal-left">
+      <div class="form-row">
+        <div class="input-wrap">
+          <label>YOUR NAME</label>
+          <input type="text" placeholder="e.g. Juan dela Cruz">
+        </div>
+        <div class="input-wrap">
+          <label>YOUR EMAIL</label>
+          <input type="email" placeholder="juan@email.com">
+        </div>
+      </div>
+      <div class="input-wrap">
+        <label>SUBJECT</label>
+        <input type="text" placeholder="What's this about?">
+      </div>
+      <div class="input-wrap">
+        <label>MESSAGE</label>
+        <textarea placeholder="Tell me about your project..."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;gap:.6rem">
+        <i class="fa-solid fa-paper-plane"></i> Send Message
+      </button>
+    </div>
+
+    <div class="reveal-right">
+      <div class="contact-info">
+        <h3>Let's work together</h3>
+        <div class="contact-item">
+          <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+          <div><small>Email</small><span>randolfgabriel5@email.com</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><i class="fa-solid fa-phone"></i></div>
+          <div><small>Phone</small><span>0995601045</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div><small>Location</small><span>Marulas, Valenzuela City</span></div>
+        </div>
+        <div class="socials">
+          <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer>
+   <span>Randolf Gabriel</span> — 
+</footer>
+
+<!-- ════════════════════════════════
+     LIGHTBOX
+════════════════════════════════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></button>
+  <img src="" alt="" id="lightboxImg">
+  <p class="lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<!-- ════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════ -->
+<script>
+/* ── Navbar scroll ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ── Mobile menu ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  const icon = hamburger.querySelector('i');
+  icon.classList.toggle('fa-bars');
+  icon.classList.toggle('fa-xmark');
+});
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    hamburger.querySelector('i').classList.replace('fa-xmark','fa-bars');
+  });
+});
+
+/* ── Scroll reveal ── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObserver.observe(el));
+
+/* ── Skill bars ── */
+const skillsSection = document.getElementById('skills');
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.progress-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width;
+      });
+      skillObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+skillObserver.observe(skillsSection);
+
+/* ── Lightbox ── */
+const lightbox       = document.getElementById('lightbox');
+const lightboxImg    = document.getElementById('lightboxImg');
+const lightboxCaption= document.getElementById('lightboxCaption');
+const lightboxClose  = document.getElementById('lightboxClose');
+
+function openLightbox(src, caption) {
+  lightboxImg.src = src;
+  lightboxCaption.textContent = caption || '';
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Clickable project images
+document.querySelectorAll('.lightbox-trigger').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img.src, img.dataset.caption));
+});
+// Also clicking the "View Image" overlay button
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const img = btn.closest('.proj-thumb').querySelector('.lightbox-trigger');
+    if(img) openLightbox(img.src, img.dataset.caption);
+  });
+});
+// Clicking profile photo opens lightbox
+document.getElementById('profileImgWrap').addEventListener('click', () => {
+  const src = document.getElementById('profileImg').src;
+  openLightbox(src, 'Randolf Gabriel');
+});
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
